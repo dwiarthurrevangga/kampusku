@@ -1,6 +1,9 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { Container } from 'react-bootstrap';
+// 1) Pastikan nama import ini persis sama dengan nama file/ekspor:
+import MockFeedPages from '../components/MockFeedPages';
 
 function Home() {
   const { user } = useAuth();
@@ -10,10 +13,13 @@ function Home() {
   }
 
   return (
-    <div>
+    <Container className="my-4">
       <h2>Beranda Kampusku</h2>
       <p>Selamat datang, {user.username}! Ini halaman utama forum.</p>
-    </div>
+      
+      {/* 2) Render mock feed di sini */}
+      <MockFeedPages />
+    </Container>
   );
 }
 
