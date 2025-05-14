@@ -1,4 +1,4 @@
-// src/components/NavigationBar.jsx
+// src/components/NavigationBar.js
 import React from 'react';
 import { Navbar, Nav, Container, Button } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
@@ -14,7 +14,7 @@ export default function NavigationBar() {
   };
 
   return (
-    <Navbar bg="primary" variant="dark" expand="md">
+    <Navbar className="navbar-custom" variant="dark" expand="md">
       <Container>
         {/* Brand */}
         <Navbar.Brand as={Link} to="/">

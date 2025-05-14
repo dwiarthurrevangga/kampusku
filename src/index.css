@@ -1,13 +1,30 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+:root {
+  --navbar-bg: #213448;
+  --app-bg:     #ECEFCA;
+  --post-bg:    #547792;
+  --comment-bg: #94B4C1;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+/* 1) Background seluruh halaman */
+body {
+  background-color: var(--app-bg);
+}
+
+/* 2) Navbar */
+.navbar-custom {
+  background-color: var(--navbar-bg) !important;
+}
+
+/* 3) Card post */
+.post-card {
+  background-color: var(--post-bg);
+  border-color: var(--post-bg);
+  color: #fff;           /* teks putih agar kontras */
+}
+
+/* 4) Card komentar */
+.comment-card {
+  background-color: var(--comment-bg);
+  border-color: var(--comment-bg);
+  color: #000;           /* teks gelap untuk readability */
 }
