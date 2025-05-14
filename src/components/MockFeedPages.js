@@ -7,6 +7,8 @@ const initialPosts = [
     id: 1,
     content: 'Halo semua, ini postingan dummy!',
     created_at: new Date().toISOString(),
+    uovote: 0,
+    downvote: 0,
     comments: [
       { id: 101, content: 'Komentar pertama di dummy!', created_at: new Date().toISOString() },
     ],
@@ -15,6 +17,8 @@ const initialPosts = [
     id: 2,
     content: 'Postingan kedua—coba feednya!',
     created_at: new Date().toISOString(),
+    uovote: 0,
+    downvote: 0,
     comments: [],
   },
 ];

@@ -1,22 +1,31 @@
+// src/App.js
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Navbar from './components/Navbar';
+
+// → default import AuthProvider
+import AuthProvider from './context/AuthContext';
+
+// Navbar (sesuaikan nama filenya)
+import NavigationBar from './components/NavigationBar';
+
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
 
 function App() {
   return (
-    <Router>
-      <Navbar />
-      <div className="container mt-4">
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-        </Routes>
-      </div>
-    </Router>
+    <AuthProvider>
+      <Router>
+        <NavigationBar />
+        <div className="container mt-4">
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/" element={<Home />} />
+          </Routes>
+        </div>
+      </Router>
+    </AuthProvider>
   );
 }
 
