@@ -1,3 +1,4 @@
+// src/components/MockPostItem.jsx
 import React, { useState } from 'react';
 import { Card, Button, Collapse, Form } from 'react-bootstrap';
 
@@ -56,14 +57,22 @@ export default function MockPostItem({ post }) {
     <Card className="post-card mb-3">
       <Card.Body>
         <Card.Text className="text-dark">{post.content}</Card.Text>
+
+        {/* Footer: timestamp + tombol Comment */}
         <div className="d-flex justify-content-between align-items-center">
           <small className="text-muted">
             {new Date(post.created_at).toLocaleString()}
           </small>
-          <Button variant="link" size="sm" onClick={toggleComments}>
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={toggleComments}
+          >
             {showComments ? 'Hide Comments' : `Comment (${comments.length})`}
           </Button>
         </div>
+
+        {/* Voting UI */}
         <div className="d-flex align-items-center mt-2 mb-3">
           <Button
             size="sm"
@@ -76,11 +85,13 @@ export default function MockPostItem({ post }) {
             size="sm"
             variant={userVote === -1 ? 'danger' : 'outline-danger'}
             onClick={handleDownvote}
-            className="ml-2"
+            className="ms-2"
           >
             ▼ {downvotes}
           </Button>
         </div>
+
+        {/* Area komentar */}
         <Collapse in={showComments}>
           <div className="mt-3">
             <Form onSubmit={submitComment}>
@@ -94,11 +105,12 @@ export default function MockPostItem({ post }) {
                 />
               </Form.Group>
             </Form>
+
             <div className="mt-2">
               {comments.map(c => (
-                <Card key={c.id} className="mb-2">
+                <Card key={c.id} className="comment-card mb-2">
                   <Card.Body>
-                    <Card.Text>{c.content}</Card.Text>
+                    <Card.Text className="text-dark">{c.content}</Card.Text>
                     <small className="text-muted">
                       {new Date(c.created_at).toLocaleString()}
                     </small>
