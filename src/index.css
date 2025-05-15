@@ -5,26 +5,22 @@
   --comment-bg: #94B4C1;
 }
 
-/* 1) Background seluruh halaman */
 body {
   background-color: var(--app-bg);
 }
 
-/* 2) Navbar */
 .navbar-custom {
   background-color: var(--navbar-bg) !important;
 }
 
-/* 3) Card post */
 .post-card {
   background-color: var(--post-bg);
   border-color: var(--post-bg);
-  color: #fff;           /* teks putih agar kontras */
+  color: #fff;
 }
 
-/* 4) Card komentar */
 .comment-card {
   background-color: var(--comment-bg);
   border-color: var(--comment-bg);
-  color: #000;           /* teks gelap untuk readability */
+  color: #000;
 }

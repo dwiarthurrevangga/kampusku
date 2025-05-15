@@ -10,7 +10,6 @@ function Login() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Simulasi login user
     const dummyUser = { username: email.split('@')[0], email };
     login(dummyUser);
     navigate('/');

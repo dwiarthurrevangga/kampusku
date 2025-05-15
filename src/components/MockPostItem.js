@@ -1,4 +1,3 @@
-// src/components/MockPostItem.jsx
 import React, { useState } from 'react';
 import { Card, Button, Collapse, Form } from 'react-bootstrap';
 
@@ -7,25 +6,21 @@ export default function MockPostItem({ post }) {
   const [comments, setComments]     = useState(post.comments);
   const [newComment, setNewComment] = useState('');
 
-  // **Pisah vote counts**
   const [upvotes, setUpvotes]       = useState(post.upvotes || 0);
   const [downvotes, setDownvotes]   = useState(post.downvotes || 0);
-  const [userVote, setUserVote]     = useState(null); // 1 = upvoted, -1 = downvoted
+  const [userVote, setUserVote]     = useState(null);
 
   const toggleComments = () => setShowComments(!showComments);
 
   const handleUpvote = () => {
     if (userVote === 1) {
-      // batal upvote
       setUpvotes(upvotes - 1);
       setUserVote(null);
     } else if (userVote === -1) {
-      // ubah down → up
       setDownvotes(downvotes - 1);
       setUpvotes(upvotes + 1);
       setUserVote(1);
     } else {
-      // pertama kali upvote
       setUpvotes(upvotes + 1);
       setUserVote(1);
     }
@@ -33,16 +28,13 @@ export default function MockPostItem({ post }) {
 
   const handleDownvote = () => {
     if (userVote === -1) {
-      // batal downvote
       setDownvotes(downvotes - 1);
       setUserVote(null);
     } else if (userVote === 1) {
-      // ubah up → down
       setUpvotes(upvotes - 1);
       setDownvotes(downvotes + 1);
       setUserVote(-1);
     } else {
-      // pertama kali downvote
       setDownvotes(downvotes + 1);
       setUserVote(-1);
     }
@@ -63,10 +55,7 @@ export default function MockPostItem({ post }) {
   return (
     <Card className="post-card mb-3">
       <Card.Body>
-        {/* Konten Post */}
         <Card.Text className="text-dark">{post.content}</Card.Text>
-
-        {/* Footer: timestamp + toggle komentar */}
         <div className="d-flex justify-content-between align-items-center">
           <small className="text-muted">
             {new Date(post.created_at).toLocaleString()}
@@ -75,8 +64,6 @@ export default function MockPostItem({ post }) {
             {showComments ? 'Hide Comments' : `Comment (${comments.length})`}
           </Button>
         </div>
-
-        {/* Voting UI di bawah tanggal */}
         <div className="d-flex align-items-center mt-2 mb-3">
           <Button
             size="sm"
@@ -94,8 +81,6 @@ export default function MockPostItem({ post }) {
             ▼ {downvotes}
           </Button>
         </div>
-
-        {/* Area komentar */}
         <Collapse in={showComments}>
           <div className="mt-3">
             <Form onSubmit={submitComment}>

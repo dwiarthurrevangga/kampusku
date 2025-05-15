@@ -8,10 +8,8 @@ export default function PostItem({ post }) {
   const [newComment, setNewComment] = useState('');
   const [loading, setLoading] = useState(false);
 
-  // toggle komentar
   const toggleComments = () => setShowComments(!showComments);
 
-  // kirim komentar baru
   const submitComment = async e => {
     e.preventDefault();
     if (!newComment.trim()) return;

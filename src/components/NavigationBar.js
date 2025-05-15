@@ -1,4 +1,3 @@
-// src/components/NavigationBar.jsx
 import React from 'react';
 import { Navbar, Nav, Container, Button } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
@@ -28,7 +27,6 @@ export default function NavigationBar() {
           </Nav>
 
           <Nav className="align-items-center">
-            {/* Jika belum login, tampilkan Login + Register */}
             {!user && (
               <>
                 <Nav.Link as={Link} to="/login">
@@ -46,7 +44,6 @@ export default function NavigationBar() {
               </>
             )}
 
-            {/* Jika sudah login, tampilkan greeting + Logout */}
             {user && (
               <>
                 <Navbar.Text className="me-3">
