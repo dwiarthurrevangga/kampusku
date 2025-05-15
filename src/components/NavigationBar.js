@@ -1,5 +1,6 @@
+// src/components/NavigationBar.js
 import React from 'react';
-import { Navbar, Nav, Container, Button } from 'react-bootstrap';
+import { Navbar as BSNavbar, Nav, Container, Button } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
@@ -13,21 +14,26 @@ export default function NavigationBar() {
   };
 
   return (
-    <Navbar className="navbar-custom" variant="dark" expand="md">
+    <BSNavbar className="navbar-custom" variant="dark" expand="md">
       <Container>
-        <Navbar.Brand as={Link} to="/">
+        <BSNavbar.Brand as={Link} to="/">
           Kampusku
-        </Navbar.Brand>
-        <Navbar.Toggle aria-controls="main-navbar" />
-        <Navbar.Collapse id="main-navbar">
+        </BSNavbar.Brand>
+        <BSNavbar.Toggle aria-controls="main-navbar" />
+        <BSNavbar.Collapse id="main-navbar">
           <Nav className="me-auto">
             <Nav.Link as={Link} to="/">
               Beranda
             </Nav.Link>
+            {user && (
+              <Nav.Link as={Link} to="/profile">
+                Profil
+              </Nav.Link>
+            )}
           </Nav>
 
           <Nav className="align-items-center">
-            {!user && (
+            {!user ? (
               <>
                 <Nav.Link as={Link} to="/login">
                   Login
@@ -42,21 +48,20 @@ export default function NavigationBar() {
                   Register
                 </Button>
               </>
-            )}
-
-            {user && (
+            ) : (
               <>
-                <Navbar.Text className="me-3">
+                {/* use Nav.Item instead of Navbar.Text */}
+                <Nav.Item className="me-3 text-secondary">
                   Halo, {user.username}
-                </Navbar.Text>
+                </Nav.Item>
                 <Button variant="outline-light" size="sm" onClick={handleLogout}>
                   Logout
                 </Button>
               </>
             )}
           </Nav>
-        </Navbar.Collapse>
+        </BSNavbar.Collapse>
       </Container>
-    </Navbar>
+    </BSNavbar>
   );
 }
