@@ -61,10 +61,10 @@ export default function MockPostItem({ post }) {
   };
 
   return (
-    <Card className="mb-3">
+    <Card className="post-card mb-3">
       <Card.Body>
         {/* Konten Post */}
-        <Card.Text>{post.content}</Card.Text>
+        <Card.Text className="text-dark">{post.content}</Card.Text>
 
         {/* Footer: timestamp + toggle komentar */}
         <div className="d-flex justify-content-between align-items-center">

@@ -18,7 +18,7 @@ export default function MockPostForm({ onSuccess }) {
   };
 
   return (
-    <Card>
+    <Card className="post-card">
       <Card.Body>
         <Form onSubmit={submitHandler}>
           <Form.Group controlId="mockPostContent">
