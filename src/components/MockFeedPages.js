@@ -1,33 +1,49 @@
 import React, { useState } from 'react';
+import { useAuth } from '../context/AuthContext';
 import MockPostForm from './MockPostForm';
 import MockPostItem from './MockPostItem';
 
 const initialPosts = [
   {
     id: 1,
+    username: 'alice',
     content: 'Halo semua, ini postingan dummy!',
     created_at: new Date().toISOString(),
-    uovote: 0,
-    downvote: 0,
+    upvotes: 2,
+    downvotes: 1,
     comments: [
-      { id: 101, content: 'Komentar pertama di dummy!', created_at: new Date().toISOString() },
+      {
+        id: 101,
+        username: 'bob',
+        content: 'Komentar pertama di dummy!',
+        created_at: new Date().toISOString(),
+      },
     ],
   },
   {
     id: 2,
+    username: 'charlie',
     content: 'Postingan kedua—coba feednya!',
     created_at: new Date().toISOString(),
-    uovote: 0,
-    downvote: 0,
+    upvotes: 0,
+    downvotes: 0,
     comments: [],
   },
 ];
 
 export default function MockFeedPage() {
+  const { user } = useAuth();
   const [posts, setPosts] = useState(initialPosts);
 
   const handleNewPost = newPost => {
-    setPosts([newPost, ...posts]);
+    setPosts([
+      {
+        ...newPost,
+        username: user.username,
+        comments: [],
+      },
+      ...posts,
+    ]);
   };
 
   return (

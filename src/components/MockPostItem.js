@@ -1,15 +1,14 @@
-// src/components/MockPostItem.jsx
 import React, { useState } from 'react';
 import { Card, Button, Collapse, Form } from 'react-bootstrap';
 
 export default function MockPostItem({ post }) {
   const [showComments, setShowComments] = useState(false);
-  const [comments, setComments]     = useState(post.comments);
-  const [newComment, setNewComment] = useState('');
+  const [comments, setComments]         = useState(post.comments || []);
+  const [newComment, setNewComment]     = useState('');
 
-  const [upvotes, setUpvotes]       = useState(post.upvotes || 0);
-  const [downvotes, setDownvotes]   = useState(post.downvotes || 0);
-  const [userVote, setUserVote]     = useState(null);
+  const [upvotes, setUpvotes]           = useState(post.upvotes || 0);
+  const [downvotes, setDownvotes]       = useState(post.downvotes || 0);
+  const [userVote, setUserVote]         = useState(null);
 
   const toggleComments = () => setShowComments(!showComments);
 
@@ -43,10 +42,12 @@ export default function MockPostItem({ post }) {
 
   const submitComment = e => {
     e.preventDefault();
-    if (!newComment.trim()) return;
+    const text = newComment.trim();
+    if (!text) return;
     const comment = {
       id: Date.now(),
-      content: newComment,
+      username: 'current_user',
+      content: text,
       created_at: new Date().toISOString(),
     };
     setComments([comment, ...comments]);
@@ -56,7 +57,15 @@ export default function MockPostItem({ post }) {
   return (
     <Card className="post-card mb-3">
       <Card.Body>
-        <Card.Text className="text-dark">{post.content}</Card.Text>
+        {/* Username pembuat post */}
+        <Card.Title className="text-dark mb-1">
+          @{post.username}
+        </Card.Title>
+
+        {/* Konten post */}
+        <Card.Text className="text-dark">
+          {post.content}
+        </Card.Text>
 
         {/* Footer: timestamp + tombol Comment */}
         <div className="d-flex justify-content-between align-items-center">
@@ -110,7 +119,12 @@ export default function MockPostItem({ post }) {
               {comments.map(c => (
                 <Card key={c.id} className="comment-card mb-2">
                   <Card.Body>
-                    <Card.Text className="text-dark">{c.content}</Card.Text>
+                    <Card.Subtitle className="mb-1 text-dark">
+                      @{c.username}
+                    </Card.Subtitle>
+                    <Card.Text className="text-dark">
+                      {c.content}
+                    </Card.Text>
                     <small className="text-muted">
                       {new Date(c.created_at).toLocaleString()}
                     </small>
