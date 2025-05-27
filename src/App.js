@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import AuthProvider from './context/AuthContext';
+import { PostsProvider } from './context/PostsContext';
 
 import NavigationBar from './components/NavigationBar';
 
@@ -13,17 +14,19 @@ import ProfilePage from './pages/ProfilePage';
 function App() {
   return (
     <AuthProvider>
-      <Router>
-        <NavigationBar />
-        <div className="container mt-4">
-          <Routes>
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/profile" element={<ProfilePage />} />
-            <Route path="/" element={<Home />} />
-          </Routes>
-        </div>
-      </Router>
+      <PostsProvider>
+        <Router>
+          <NavigationBar />
+          <div className="container mt-4">
+            <Routes>
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/profile" element={<ProfilePage />} />
+              <Route path="/" element={<Home />} />
+            </Routes>
+          </div>
+        </Router>
+      </PostsProvider>
     </AuthProvider>
   );
 }
