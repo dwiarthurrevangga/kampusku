@@ -42,7 +42,7 @@ export default function ProfilePage() {
       </Card>
 
       {/* Timeline Kegiatan */}
-      <h4 className="text-dark mb-3">Timeline Kegiatan</h4>
+      <h4 className="text-dark mb-3">Timeline</h4>
       {myPosts.length > 0 ? (
         myPosts.map(post => (
           <MockPostItem key={post.id} post={post} />
