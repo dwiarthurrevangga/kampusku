@@ -1,10 +1,9 @@
-// src/pages/ProfilePage.js
 import React, { useState } from 'react';
 import { Card, Button } from 'react-bootstrap';
 import { useAuth } from '../context/AuthContext';
 import { usePosts } from '../context/PostsContext';
 import EditProfileForm from '../components/EditProfileForm';
-import MockPostItem from '../components/MockPostItem';
+import PostItem from '../components/PostItem';
 
 export default function ProfilePage() {
   const { user } = useAuth();
@@ -45,7 +44,7 @@ export default function ProfilePage() {
       <h4 className="text-dark mb-3">Timeline</h4>
       {myPosts.length > 0 ? (
         myPosts.map(post => (
-          <MockPostItem key={post.id} post={post} />
+          <PostItem key={post.id} post={post} />
         ))
       ) : (
         <p className="text-dark">Belum ada postingan.</p>

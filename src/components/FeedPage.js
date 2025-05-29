@@ -1,43 +1,39 @@
+// src/components/FeedPage.jsx
 import React, { useState, useEffect } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import api from '../api';
 import { useAuth } from '../context/AuthContext';
-import MockPostForm from './MockPostForm';
-import MockPostItem from './MockPostItem';
+import { usePosts } from '../context/PostsContext';
+import PostForm from './PostForm';
+import PostItem from './PostItem';
 
 export default function FeedPage() {
   const { user } = useAuth();
+  const { posts } = usePosts();
   const PAGE_SIZE = 5;
-  const [posts, setPosts] = useState([]);
+
+  // 'displayed' adalah potongan awal dari 'posts'
   const [displayed, setDisplayed] = useState([]);
 
-  // load all posts on mount
+  // setiap kali 'posts' berubah (fetch awal atau setelah create/delete),
+  // reset 'displayed' ke slice pertama
   useEffect(() => {
-    api.get('/posts').then(({ data }) => {
-      setPosts(data);
-      setDisplayed(data.slice(0, PAGE_SIZE));
-    });
-  }, []);
+    setDisplayed(posts.slice(0, PAGE_SIZE));
+  }, [posts]);
 
-  // create post via API
-  const handleNewPost = ({ content }) => {
-    api.post('/posts', { user_id: user.id, content })
-       .then(({ data: p }) => {
-         setPosts(prev => [p, ...prev]);
-         setDisplayed(prev => [p, ...prev]); 
-       });
-  };
-
-  // infinite scroll
+  // ketika scroll, ambil batch selanjutnya
   const fetchMore = () => {
-    const next = posts.slice(displayed.length, displayed.length + PAGE_SIZE);
-    setDisplayed(d => [...d, ...next]);
+    setDisplayed(prev => [
+      ...prev,
+      ...posts.slice(prev.length, prev.length + PAGE_SIZE)
+    ]);
   };
 
   return (
     <>
       <h3 className="mt-4">Feed</h3>
-      <MockPostForm onSuccess={handleNewPost} />
+
+      {/* Form untuk bikin post baru, langsung update Context + backend */}
+      <PostForm />
 
       <InfiniteScroll
         dataLength={displayed.length}
@@ -46,7 +42,7 @@ export default function FeedPage() {
         loader={<h6 className="text-center mt-3">Loading more...</h6>}
       >
         {displayed.map(post => (
-          <MockPostItem key={post.id} post={post} />
+          <PostItem key={post.id} post={post} />
         ))}
       </InfiniteScroll>
     </>
