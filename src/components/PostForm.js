@@ -1,32 +1,35 @@
+// src/components/PostForm.jsx
 import React, { useState } from 'react';
-import axios from 'axios';
-import { Form, Button, Card } from 'react-bootstrap';
+import { Card, Form, Button } from 'react-bootstrap';
+import { useAuth } from '../context/AuthContext';
+import { usePosts } from '../context/PostsContext';
+import api from '../api';
 
-export default function PostForm({ onSuccess }) {
+export default function PostForm() {
+  const { user } = useAuth();
+  const { posts, setPosts } = usePosts();
   const [content, setContent] = useState('');
-  const [loading, setLoading] = useState(false);
 
-  const submitHandler = async e => {
+  const handleSubmit = async e => {
     e.preventDefault();
-    if (!content.trim()) return;
-    setLoading(true);
-
+    const text = content.trim();
+    if (!text) return;
     try {
-      const res = await axios.post('/api/posts', { content });
-      onSuccess(res.data);
+      const { data: newPost } = await api.post('/posts', {
+        user_id: user.id,
+        content: text
+      });
+      setPosts([newPost, ...posts]);
       setContent('');
     } catch (err) {
-      console.error(err);
-      alert('Gagal mengirim post');
-    } finally {
-      setLoading(false);
+      console.error('Gagal membuat post:', err);
     }
   };
 
   return (
-    <Card>
+    <Card className="post-card mb-4">
       <Card.Body>
-        <Form onSubmit={submitHandler}>
+        <Form onSubmit={handleSubmit}>
           <Form.Group controlId="postContent">
             <Form.Control
               as="textarea"
@@ -34,12 +37,11 @@ export default function PostForm({ onSuccess }) {
               placeholder="Apa yang Anda pikirkan?"
               value={content}
               onChange={e => setContent(e.target.value)}
-              disabled={loading}
             />
           </Form.Group>
-          <div className="text-right mt-2">
-            <Button type="submit" disabled={loading}>
-              {loading ? 'Posting...' : 'Post'}
+          <div className="text-end mt-2">
+            <Button type="submit" disabled={!content.trim()}>
+              Post
             </Button>
           </div>
         </Form>

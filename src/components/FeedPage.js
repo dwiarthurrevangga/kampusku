@@ -1,37 +1,54 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import { Container, Row, Col } from 'react-bootstrap';
-import PostForm from './PostForm';
-import PostItem from './PostItem';
+import React, { useState, useEffect } from 'react';
+import InfiniteScroll from 'react-infinite-scroll-component';
+import api from '../api';
+import { useAuth } from '../context/AuthContext';
+import MockPostForm from './MockPostForm';
+import MockPostItem from './MockPostItem';
 
 export default function FeedPage() {
+  const { user } = useAuth();
+  const PAGE_SIZE = 5;
   const [posts, setPosts] = useState([]);
+  const [displayed, setDisplayed] = useState([]);
 
-  // fetch semua post
+  // load all posts on mount
   useEffect(() => {
-    axios.get('/api/posts')
-      .then(res => setPosts(res.data))
-      .catch(err => console.error(err));
+    api.get('/posts').then(({ data }) => {
+      setPosts(data);
+      setDisplayed(data.slice(0, PAGE_SIZE));
+    });
   }, []);
 
-  // handler untuk menambahkan post baru ke state
-  const handleNewPost = newPost => {
-    setPosts([newPost, ...posts]);
+  // create post via API
+  const handleNewPost = ({ content }) => {
+    api.post('/posts', { user_id: user.id, content })
+       .then(({ data: p }) => {
+         setPosts(prev => [p, ...prev]);
+         setDisplayed(prev => [p, ...prev]); 
+       });
+  };
+
+  // infinite scroll
+  const fetchMore = () => {
+    const next = posts.slice(displayed.length, displayed.length + PAGE_SIZE);
+    setDisplayed(d => [...d, ...next]);
   };
 
   return (
-    <Container className="my-4">
-      <Row>
-        <Col md={8} className="mx-auto">
-          <h2 className="mb-4">Feed</h2>
-          <PostForm onSuccess={handleNewPost} />
-          <div className="mt-4">
-            {posts.map(post => (
-              <PostItem key={post.id} post={post} />
-            ))}
-          </div>
-        </Col>
-      </Row>
-    </Container>
+    <>
+      <h3 className="mt-4">Feed</h3>
+      <MockPostForm onSuccess={handleNewPost} />
+
+      <InfiniteScroll
+        dataLength={displayed.length}
+        next={fetchMore}
+        hasMore={displayed.length < posts.length}
+        loader={<h6 className="text-center mt-3">Loading more...</h6>}
+      >
+        {displayed.map(post => (
+          <MockPostItem key={post.id} post={post} />
+        ))}
+      </InfiniteScroll>
+    </>
   );
 }

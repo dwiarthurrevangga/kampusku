@@ -1,34 +1,63 @@
-// src/context/AuthContext.js
-import React, { createContext, useContext, useState } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect
+} from 'react';
+import api from '../api';
 
 const AuthContext = createContext();
 
-export default function AuthProvider({ children }) {
-  const [user, setUser] = useState(
-    JSON.parse(localStorage.getItem('user'))
-  );
+export function useAuth() {
+  return useContext(AuthContext);
+}
 
-  const login = u => {
-    localStorage.setItem('user', JSON.stringify(u));
-    setUser(u);
-  };
+export default function AuthProvider({ children }) {
+  const [user, setUser] = useState(() => {
+    const saved = localStorage.getItem('user');
+    return saved ? JSON.parse(saved) : null;
+  });
+
+  useEffect(() => {
+    if (user) {
+      localStorage.setItem('user', JSON.stringify(user));
+    } else {
+      localStorage.removeItem('user');
+    }
+  }, [user]);
+
+  const register = (username, email, password) =>
+    api
+      .post('/register', { username, email, password })
+      .then(res => {
+        setUser(res.data);
+        return res.data;
+      });
+
+  const login = (username, password) =>
+    api
+      .post('/login', { username, password })
+      .then(res => {
+        setUser(res.data);
+        return res.data;
+      });
 
   const logout = () => {
-    localStorage.removeItem('user');
     setUser(null);
+    // localStorage is cleared by the effect above
   };
 
   const updateUser = updatedFields => {
     const newUser = { ...user, ...updatedFields };
-    localStorage.setItem('user', JSON.stringify(newUser));
     setUser(newUser);
+    return newUser;
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, updateUser }}>
+    <AuthContext.Provider
+      value={{ user, register, login, logout, updateUser }}
+    >
       {children}
     </AuthContext.Provider>
   );
 }
-
-export const useAuth = () => useContext(AuthContext);
