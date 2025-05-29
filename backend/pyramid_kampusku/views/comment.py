@@ -49,11 +49,25 @@ def add_comment(request):
 
 @view_config(route_name='comment', renderer='json', request_method='DELETE')
 def delete_comment(request):
+    """DELETE /api/comments/{id} — delete a comment."""
     cid = int(request.matchdict['id'])
-    c = DBSession.query(Comment).get(cid)
+    c   = DBSession.query(Comment).get(cid)
     if c is None:
         request.response.status = 404
         return {'error': 'Comment not found'}
-    DBSession.delete(c)
-    DBSession.commit()
-    return {'status': 'deleted'}
+
+    data    = request.json_body
+    user_id = data.get('user_id')
+    # ownership check
+    if c.user_id != user_id:
+        request.response.status = 403
+        return {'error': "Forbidden: cannot delete others' comments"}
+
+    try:
+        DBSession.delete(c)
+        DBSession.commit()
+        return {'status': 'deleted'}
+    except Exception:
+        DBSession.rollback()
+        request.response.status = 500
+        return {'error': 'Server error deleting comment'}

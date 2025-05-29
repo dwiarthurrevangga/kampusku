@@ -12,6 +12,7 @@ export default function CommentItem({ comment, postId, level = 0 }) {
   const [showReplyForm, setShowReplyForm] = useState(false);
   const [replyContent, setReplyContent]   = useState('');
 
+  // Balas comment
   const handleReply = async e => {
     e.preventDefault();
     const text = replyContent.trim();
@@ -21,47 +22,51 @@ export default function CommentItem({ comment, postId, level = 0 }) {
         `/posts/${postId}/comments`,
         { user_id: user.id, content: text, parent_id: comment.id }
       );
-      // inject the new reply into the correct comment tree
-      const injectReply = (list) =>
+      const inject = list =>
         list.map(c =>
           c.id === comment.id
-            ? { ...c, replies: [ newComment, ...(c.replies||[]) ] }
+            ? { ...c, replies: [newComment, ...(c.replies||[])] }
             : c.replies
-              ? { ...c, replies: injectReply(c.replies) }
+              ? { ...c, replies: inject(c.replies) }
               : c
         );
-      const updatedComments = injectReply(posts.find(p=>p.id===postId).comments);
-      // update context
+      const updatedComments = inject(
+        posts.find(p => p.id === postId).comments
+      );
       setPosts(posts.map(p =>
         p.id === postId ? { ...p, comments: updatedComments } : p
       ));
       setReplyContent('');
       setShowReplyForm(false);
     } catch (err) {
-      console.error('Failed to post reply', err);
+      console.error('Gagal balas komentar:', err);
     }
   };
 
+  // Hapus comment
   const handleDelete = async () => {
     if (!window.confirm('Yakin ingin menghapus komentar ini?')) return;
     try {
-      await api.delete(`/comments/${comment.id}`);
-      // remove the comment from the tree
-      const removeComment = (list) =>
+      await api.delete(
+        `/comments/${comment.id}`,
+        { data: { user_id: user.id } }
+      );
+      const removeRec = list =>
         list
           .filter(c => c.id !== comment.id)
-          .map(c => c.replies
-            ? { ...c, replies: removeComment(c.replies) }
-            : c
+          .map(c =>
+            c.replies
+              ? { ...c, replies: removeRec(c.replies) }
+              : c
           );
-      const updatedComments = removeComment(
-        posts.find(p=>p.id===postId).comments
+      const updatedComments = removeRec(
+        posts.find(p => p.id === postId).comments
       );
       setPosts(posts.map(p =>
         p.id === postId ? { ...p, comments: updatedComments } : p
       ));
     } catch (err) {
-      console.error('Failed to delete comment', err);
+      console.error('Gagal hapus komentar:', err);
     }
   };
 
@@ -72,10 +77,13 @@ export default function CommentItem({ comment, postId, level = 0 }) {
           <Card.Subtitle className="mb-1 text-dark">
             @{comment.username}
           </Card.Subtitle>
-          <Card.Text className="text-dark">{comment.content}</Card.Text>
+          <Card.Text className="text-dark">
+            {comment.content}
+          </Card.Text>
           <small className="text-muted">
             {new Date(comment.created_at).toLocaleString()}
           </small>
+
           <div className="mt-2 d-flex">
             <Button
               variant="outline-primary"
@@ -84,15 +92,20 @@ export default function CommentItem({ comment, postId, level = 0 }) {
             >
               Reply
             </Button>
-            <Button
-              variant="outline-danger"
-              size="sm"
-              className="ms-2"
-              onClick={handleDelete}
-            >
-              Delete
-            </Button>
+
+            {/* Hapus hanya untuk penulis comment */}
+            {comment.username === user.username && (
+              <Button
+                variant="outline-danger"
+                size="sm"
+                className="ms-2"
+                onClick={handleDelete}
+              >
+                Delete
+              </Button>
+            )}
           </div>
+
           {showReplyForm && (
             <Form onSubmit={handleReply} className="mt-2">
               <Form.Group controlId={`reply-${comment.id}`}>
@@ -104,9 +117,9 @@ export default function CommentItem({ comment, postId, level = 0 }) {
                   onChange={e => setReplyContent(e.target.value)}
                 />
               </Form.Group>
-              <div className="text-end mt-1">
-                <Button size="sm" type="submit">
-                  Submit
+              <div className="mt-1">
+                <Button size="sm" variant="primary" type="submit">
+                  Kirim
                 </Button>
               </div>
             </Form>
@@ -114,10 +127,11 @@ export default function CommentItem({ comment, postId, level = 0 }) {
         </Card.Body>
       </Card>
 
+      {/* Recursive replies */}
       {comment.replies && comment.replies.map(reply => (
         <CommentItem
           key={reply.id}
-          comment={{ ...reply, level: level + 1 }}
+          comment={reply}
           postId={postId}
           level={level + 1}
         />
