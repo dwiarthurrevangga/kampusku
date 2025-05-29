@@ -1,0 +1,10 @@
+setup.py
+kampusku.egg-info/PKG-INFO
+kampusku.egg-info/SOURCES.txt
+kampusku.egg-info/dependency_links.txt
+kampusku.egg-info/entry_points.txt
+kampusku.egg-info/requires.txt
+kampusku.egg-info/top_level.txt
+yourpackage/__init__.py
+yourpackage/models.py
+yourpackage/routes.py

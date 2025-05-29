@@ -1,0 +1,11 @@
+Metadata-Version: 2.4
+Name: pyramid_kampusku
+Version: 1.0
+Requires-Dist: pyramid
+Requires-Dist: pyramid_jinja2
+Requires-Dist: pyramid_debugtoolbar
+Requires-Dist: sqlalchemy
+Requires-Dist: psycopg2-binary
+Requires-Dist: bcrypt
+Requires-Dist: waitress
+Dynamic: requires-dist

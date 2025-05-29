@@ -1,0 +1,7 @@
+pyramid
+pyramid_jinja2
+pyramid_debugtoolbar
+sqlalchemy
+psycopg2-binary
+bcrypt
+waitress
