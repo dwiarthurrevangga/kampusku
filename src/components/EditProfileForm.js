@@ -1,37 +1,45 @@
+// src/components/EditProfileForm.jsx
 import React, { useState } from 'react';
-import { Form, Button, Alert } from 'react-bootstrap';
+import { Form, Button, Alert, Spinner } from 'react-bootstrap';
+import api from '../api';
 import { useAuth } from '../context/AuthContext';
 
 export default function EditProfileForm({ user, onCancel }) {
   const { updateUser } = useAuth();
-
   const [username, setUsername] = useState(user.username);
   const [email, setEmail]       = useState(user.email);
   const [error, setError]       = useState('');
   const [saving, setSaving]     = useState(false);
 
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault();
+    setError('');
     if (!username.trim() || !email.trim()) {
-      setError('Field tidak boleh kosong.');
+      setError('Username dan email tidak boleh kosong.');
       return;
     }
-    setError('');
     setSaving(true);
-
-    setTimeout(() => {
-      updateUser({ username, email });
-      setSaving(false);
+    try {
+      const { data: updated } = await api.put(
+        `/users/${user.id}`,
+        { username: username.trim(), email: email.trim() }
+      );
+      updateUser(updated);
       onCancel();
-    }, 500);
+    } catch (err) {
+      console.error(err);
+      const msg = err.response?.data?.error || 'Gagal memperbarui profil';
+      setError(msg);
+    } finally {
+      setSaving(false);
+    }
   };
 
   return (
     <>
       {error && <Alert variant="danger">{error}</Alert>}
-
       <Form onSubmit={handleSubmit}>
-        <Form.Group className="mb-2" controlId="editUsername">
+        <Form.Group controlId="profileUsername" className="mb-3">
           <Form.Label>Username</Form.Label>
           <Form.Control
             type="text"
@@ -41,7 +49,7 @@ export default function EditProfileForm({ user, onCancel }) {
           />
         </Form.Group>
 
-        <Form.Group className="mb-2" controlId="editEmail">
+        <Form.Group controlId="profileEmail" className="mb-3">
           <Form.Label>Email</Form.Label>
           <Form.Control
             type="email"
@@ -51,23 +59,25 @@ export default function EditProfileForm({ user, onCancel }) {
           />
         </Form.Group>
 
-        <div className="d-flex">
-          <Button 
-            type="submit" 
-            variant="success" 
-            size="sm" 
-            disabled={saving}
-          >
-            {saving ? 'Menyimpan...' : 'Simpan'}
-          </Button>
-          <Button 
-            variant="outline-light" 
-            size="sm" 
-            className="ms-2" 
+        <div className="d-flex justify-content-end">
+          <Button
+            variant="secondary"
             onClick={onCancel}
             disabled={saving}
           >
-            Batal
+            Cancel
+          </Button>
+          <Button
+            variant="primary"
+            type="submit"
+            className="ms-2"
+            disabled={saving}
+          >
+            {saving ? (
+              <Spinner as="span" animation="border" size="sm" />
+            ) : (
+              'Save'
+            )}
           </Button>
         </div>
       </Form>

@@ -2,6 +2,7 @@ def includeme(config):
     # User
     config.add_route('register', '/api/register')
     config.add_route('login',    '/api/login')
+    config.add_route('user',     '/api/users/{id}')
 
     # Posts
     config.add_route('posts',    '/api/posts')
