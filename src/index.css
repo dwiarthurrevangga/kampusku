@@ -21,6 +21,7 @@ body {
 
 .comment-card {
   background-color: var(--comment-bg);
-  border-color: var(--comment-bg);
+  border: 2px solid rgba(0,0,0,0.2);
+  border-radius: 0.25rem;
   color: #000;
 }
