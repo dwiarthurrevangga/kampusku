@@ -1,53 +1,206 @@
-# Getting Started with Create React App
+# Kampusku - Social Media Platform
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Deskripsi Aplikasi Web
+
+Kampusku adalah platform media sosial berbasis web yang dirancang khusus untuk komunitas kampus. Aplikasi ini memungkinkan pengguna untuk berbagi postingan, berinteraksi melalui komentar dan balasan, serta mengelola profil mereka. Dibangun dengan arsitektur modern menggunakan React untuk frontend dan Pyramid Python untuk backend, Kampusku menyediakan pengalaman pengguna yang responsif dan interaktif.
+
+### Teknologi Yang Digunakan
+- **Frontend**: React 19.1.0 dengan React Router untuk navigasi
+- **Backend**: Pyramid Framework (Python) dengan SQLAlchemy ORM
+- **Database**: PostgreSQL
+- **Styling**: Bootstrap 5.3.6 dan Tailwind CSS 4.1.5
+- **Testing**: Jest dan React Testing Library dengan coverage > 60%
+
+## Dependensi Paket (Library)
+
+### Frontend Dependencies
+```json
+{
+  "react": "^19.1.0",
+  "react-dom": "^19.1.0",
+  "react-router-dom": "^7.6.0",
+  "react-bootstrap": "^2.10.10",
+  "bootstrap": "^5.3.6",
+  "tailwindcss": "^4.1.5",
+  "axios": "^1.9.0",
+  "react-infinite-scroll-component": "^6.1.0",
+  "web-vitals": "^2.1.4"
+}
+```
+
+### Development Dependencies
+```json
+{
+  "@testing-library/react": "^16.3.0",
+  "@testing-library/jest-dom": "^6.6.3",
+  "@testing-library/user-event": "^14.6.1",
+  "@testing-library/dom": "^10.4.0",
+  "axios-mock-adapter": "^2.1.0"
+}
+```
+
+### Backend Dependencies
+```python
+install_requires=[
+  "pyramid",
+  "pyramid_jinja2", 
+  "pyramid_debugtoolbar",
+  "sqlalchemy",
+  "psycopg2-binary",
+  "bcrypt",
+  "waitress",
+]
+```
+
+## Fitur Pada Aplikasi
+
+### 🔐 Sistem Autentikasi
+- **Registrasi Pengguna**: Pendaftaran akun baru dengan validasi email dan username
+- **Login/Logout**: Sistem masuk dan keluar yang aman
+- **Manajemen Sesi**: Persistent login dengan token authentication
+
+### 📝 Manajemen Postingan
+- **Buat Postingan**: Membuat postingan baru dengan teks
+- **Edit Postingan**: Mengedit postingan yang sudah ada (hanya pemilik)
+- **Hapus Postingan**: Menghapus postingan dengan konfirmasi (hanya pemilik)
+- **Lihat Feed**: Timeline postingan dengan infinite scroll
+- **Voting System**: Upvote dan downvote untuk postingan
+
+### 💬 Sistem Komentar
+- **Komentar Postingan**: Menambahkan komentar pada postingan
+- **Balasan Komentar**: Sistem reply bertingkat untuk diskusi
+- **Hapus Komentar**: Menghapus komentar (hanya pemilik)
+- **Tampilan Hierarkis**: Struktur komentar dan balasan yang terorganisir
+
+### 👤 Manajemen Profil
+- **Lihat Profil**: Halaman profil pengguna dengan postingan mereka
+- **Edit Profil**: Mengubah informasi username dan email
+- **Validasi Form**: Validasi input dengan feedback real-time
+
+### 🎨 User Interface
+- **Responsive Design**: Antarmuka yang responsif untuk desktop dan mobile
+- **Navigation Bar**: Menu navigasi yang konsisten di seluruh aplikasi
+- **Loading States**: Indikator loading untuk operasi asynchronous
+- **Error Handling**: Penanganan error yang user-friendly
+- **Modal Confirmations**: Dialog konfirmasi untuk aksi penting
+
+### 🔧 Fitur Teknis
+- **Infinite Scrolling**: Loading postingan secara bertahap
+- **Real-time Updates**: Update data tanpa refresh halaman
+- **Form Validation**: Validasi input di frontend dan backend
+- **Security**: Password hashing dan CORS protection
+- **Testing**: Unit testing dengan coverage minimal 60%
+
+## Instalasi dan Menjalankan Aplikasi
+
+### Prerequisites
+- Node.js (v16 atau lebih baru)
+- Python 3.8+
+- PostgreSQL
+- npm atau yarn
+
+### Frontend Setup
+```bash
+# Clone repository
+git clone [repository-url]
+cd kampusku
+
+# Install dependencies
+npm install
+
+# Start development server
+npm start
+```
+
+### Backend Setup
+```bash
+# Navigate to backend directory
+cd backend
+
+# Create virtual environment
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+
+# Install dependencies
+pip install -e .
+
+# Setup database
+alembic upgrade head
+
+# Start server
+pserve development.ini --reload
+```
+
+### Running Tests
+```bash
+# Frontend tests
+npm test
+
+# Backend tests (if available)
+python -m pytest
+```
 
 ## Available Scripts
 
-In the project directory, you can run:
-
 ### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Menjalankan aplikasi dalam mode development di [http://localhost:3000](http://localhost:3000)
 
 ### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Menjalankan test suite dengan Jest dan React Testing Library
 
 ### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Membangun aplikasi untuk production ke folder `build`
 
 ### `npm run eject`
+**Catatan: Operasi ini tidak dapat dibatalkan!** Mengeluarkan konfigurasi build tools.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Struktur Proyek
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```
+kampusku/
+├── public/              # Static assets
+├── src/
+│   ├── components/      # React components
+│   ├── context/         # React context providers
+│   ├── pages/           # Page components
+│   ├── api.js          # API client configuration
+│   └── App.js          # Main application component
+├── backend/
+│   ├── pyramid_kampusku/  # Backend application
+│   ├── alembic/          # Database migrations
+│   └── setup.py          # Backend dependencies
+└── tests/               # Test files
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Referensi
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### Documentation
+- [React Documentation](https://reactjs.org/docs/getting-started.html)
+- [React Router](https://reactrouter.com/en/main)
+- [React Bootstrap](https://react-bootstrap.netlify.app/)
+- [Pyramid Framework](https://docs.pylonsproject.org/projects/pyramid/en/latest/)
+- [SQLAlchemy](https://docs.sqlalchemy.org/en/20/)
 
-## Learn More
+### UI/UX Libraries
+- [Bootstrap 5](https://getbootstrap.com/docs/5.3/getting-started/introduction/)
+- [Tailwind CSS](https://tailwindcss.com/docs)
+- [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/)
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Backend Technologies
+- [PostgreSQL](https://www.postgresql.org/docs/)
+- [Alembic Migration Tool](https://alembic.sqlalchemy.org/en/latest/)
+- [Waitress WSGI Server](https://docs.pylonsproject.org/projects/waitress/en/stable/)
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Development Tools
+- [Create React App](https://create-react-app.dev/docs/getting-started/)
+- [Jest Testing Framework](https://jestjs.io/docs/getting-started)
+- [Axios HTTP Client](https://axios-http.com/docs/intro)
 
-### Code Splitting
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+**Kampusku** - Connecting Campus Communities Through Social Media  
+Dikembangkan sebagai Tugas Besar Pemrograman Web  
+© 2025
 
 ### Analyzing the Bundle Size
 
