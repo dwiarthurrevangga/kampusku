@@ -4,6 +4,8 @@ import api from '../api';
 
 const PostsContext = createContext();
 
+export { PostsContext };
+
 export function PostsProvider({ children }) {
   const [posts, setPosts] = useState([]);
 

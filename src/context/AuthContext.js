@@ -8,6 +8,8 @@ import api from '../api';
 
 const AuthContext = createContext();
 
+export { AuthContext };
+
 export function useAuth() {
   return useContext(AuthContext);
 }
