@@ -96,13 +96,12 @@ describe('PostItem Component', () => {
     mockApi.reset();
     jest.clearAllMocks();
   });
-
   test('renders post content correctly', () => {
     renderWithProviders(<PostItem post={mockPost} />);
     
-    expect(screen.getByText('@testuser')).toBeInTheDocument();
+    expect(screen.getAllByText('@testuser')).toHaveLength(1); // Only in post header when comments are hidden
     expect(screen.getByText('Test post content')).toBeInTheDocument();
-    expect(screen.getByText(/1\/1\/2023/)).toBeInTheDocument();
+    expect(screen.getByText(/1 Jan 2023/)).toBeInTheDocument();
     expect(screen.getByText('▲ 5')).toBeInTheDocument();
     expect(screen.getByText('▼ 2')).toBeInTheDocument();
   });
@@ -242,9 +241,8 @@ describe('PostItem Component', () => {
     
     // Show comments
     await user.click(screen.getByText('Comment (2)'));
-    
-    // Delete user's own comment
-    const deleteButton = screen.getByText('Delete');
+      // Delete user's own comment
+    const deleteButton = screen.getByText('Hapus');
     await user.click(deleteButton);
     
     await waitFor(() => {
@@ -311,9 +309,8 @@ describe('PostItem Component', () => {
     
     // Open delete confirmation
     await user.click(screen.getByText('Delete'));
-    
-    // Confirm deletion
-    await user.click(screen.getByRole('button', { name: 'Hapus' }));
+      // Confirm deletion
+    await user.click(screen.getByRole('button', { name: 'Hapus Post' }));
     
     await waitFor(() => {
       expect(mockApi.history.delete).toHaveLength(1);

@@ -23,7 +23,7 @@ describe('App Component', () => {
     );
     
     // Check if navigation bar is rendered
-    expect(screen.getByText('Kampusku')).toBeInTheDocument();
+    expect(screen.getByText('🎓 Kampusku')).toBeInTheDocument();
   });
 
   test('renders login page when navigating to /login', () => {
@@ -33,7 +33,7 @@ describe('App Component', () => {
       </MemoryRouter>
     );
     
-    expect(screen.getByText('Login')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Login' })).toBeInTheDocument();
   });
 
   test('renders register page when navigating to /register', () => {
@@ -43,6 +43,6 @@ describe('App Component', () => {
       </MemoryRouter>
     );
     
-    expect(screen.getByText('Register')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Register' })).toBeInTheDocument();
   });
 });

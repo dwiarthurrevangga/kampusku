@@ -109,15 +109,14 @@ describe('ProfilePage Component', () => {
     
     expect(screen.getByText('Loading...')).toBeInTheDocument();
   });
-
   test('renders user profile information', () => {
     renderWithProviders(<ProfilePage />);
     
     expect(screen.getByText('Profil Saya')).toBeInTheDocument();
-    expect(screen.getByText('Username:')).toBeInTheDocument();
+    expect(screen.getByText(/Username:/)).toBeInTheDocument();
     expect(screen.getByText('testuser')).toBeInTheDocument();
-    expect(screen.getByText('Email:')).toBeInTheDocument();
-    expect(screen.getByText('test@example.com')).toBeInTheDocument();
+    expect(screen.getByText(/Email:/)).toBeInTheDocument();
+    expect(screen.getByText(/test@example\.com/)).toBeInTheDocument();
     expect(screen.getByText('Edit Profil')).toBeInTheDocument();
   });
 
@@ -160,13 +159,12 @@ describe('ProfilePage Component', () => {
     
     expect(screen.getByText('Belum ada postingan.')).toBeInTheDocument();
   });
-
   test('toggles edit profile form', async () => {
     const user = userEvent.setup();
     renderWithProviders(<ProfilePage />);
     
     // Initially shows profile info
-    expect(screen.getByText('Username:')).toBeInTheDocument();
+    expect(screen.getByText(/Username:/)).toBeInTheDocument();
     expect(screen.getByText('testuser')).toBeInTheDocument();
     
     // Click edit profile button
@@ -178,9 +176,8 @@ describe('ProfilePage Component', () => {
     expect(screen.getByText('Editing profile for: testuser')).toBeInTheDocument();
     
     // Profile info should be hidden
-    expect(screen.queryByText('Username:')).not.toBeInTheDocument();
+    expect(screen.queryByText(/Username:/)).not.toBeInTheDocument();
   });
-
   test('cancels edit mode', async () => {
     const user = userEvent.setup();
     renderWithProviders(<ProfilePage />);
@@ -194,7 +191,7 @@ describe('ProfilePage Component', () => {
     
     // Should return to profile view
     expect(screen.queryByTestId('edit-profile-form')).not.toBeInTheDocument();
-    expect(screen.getByText('Username:')).toBeInTheDocument();
+    expect(screen.getByText(/Username:/)).toBeInTheDocument();
     expect(screen.getByText('testuser')).toBeInTheDocument();
   });
 
@@ -295,7 +292,6 @@ describe('ProfilePage Component', () => {
     // Should still be in edit mode
     expect(screen.getByTestId('edit-profile-form')).toBeInTheDocument();
   });
-
   test('displays user profile with special characters', () => {
     const userWithSpecialChars = {
       id: 1,
@@ -306,7 +302,7 @@ describe('ProfilePage Component', () => {
     renderWithProviders(<ProfilePage />, { user: userWithSpecialChars });
     
     expect(screen.getByText('test.user_123')).toBeInTheDocument();
-    expect(screen.getByText('test+user@example.com')).toBeInTheDocument();
+    expect(screen.getByText(/test\+user@example\.com/)).toBeInTheDocument();
   });
 
   test('handles posts without required fields gracefully', () => {

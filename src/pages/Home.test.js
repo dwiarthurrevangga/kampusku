@@ -4,6 +4,12 @@ import { MemoryRouter } from 'react-router-dom';
 import Home from './Home';
 import { AuthContext } from '../context/AuthContext';
 
+// Mock the Navigate component
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  Navigate: () => null
+}));
+
 // Mock the FeedPages component
 jest.mock('../components/FeedPage', () => {
   return function MockFeedPage() {
@@ -56,12 +62,11 @@ describe('Home Component', () => {
     const container = screen.getByText('Beranda Kampusku').closest('.container');
     expect(container).toHaveClass('my-4');
   });
-
-  test('renders h2 heading with correct text', () => {
+  test('renders h1 heading with correct text', () => {
     const mockUser = { id: 1, username: 'testuser', email: 'test@example.com' };
     renderHome(mockUser);
     
-    const heading = screen.getByRole('heading', { level: 2 });
+    const heading = screen.getByRole('heading', { level: 1 });
     expect(heading).toHaveTextContent('Beranda Kampusku');
   });
 
@@ -117,8 +122,7 @@ describe('Home Component', () => {
     
     const container = screen.getByText('Beranda Kampusku').closest('.container');
     expect(container).toBeInTheDocument();
-    
-    const heading = screen.getByRole('heading', { level: 2 });
+      const heading = screen.getByRole('heading', { level: 1 });
     expect(heading).toBeInTheDocument();
     
     const welcomeText = screen.getByText(/Selamat datang,/);

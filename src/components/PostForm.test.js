@@ -32,11 +32,10 @@ describe('PostForm Component', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
-
   test('renders post form correctly', () => {
     renderPostForm();
     
-    expect(screen.getByPlaceholderText('Apa yang Anda pikirkan?')).toBeInTheDocument();
+    expect(screen.getByPlaceholderText('💭 Apa yang ingin Anda bagikan dengan komunitas kampus hari ini?')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Post' })).toBeInTheDocument();
   });
 
@@ -46,24 +45,22 @@ describe('PostForm Component', () => {
     const submitButton = screen.getByRole('button', { name: 'Post' });
     expect(submitButton).toBeDisabled();
   });
-
   test('button is enabled when content is entered', async () => {
     const user = userEvent.setup();
     renderPostForm();
     
-    const textarea = screen.getByPlaceholderText('Apa yang Anda pikirkan?');
+    const textarea = screen.getByPlaceholderText('💭 Apa yang ingin Anda bagikan dengan komunitas kampus hari ini?');
     const submitButton = screen.getByRole('button', { name: 'Post' });
     
     await user.type(textarea, 'This is a test post');
     
     expect(submitButton).toBeEnabled();
   });
-
   test('button is disabled when content is only whitespace', async () => {
     const user = userEvent.setup();
     renderPostForm();
     
-    const textarea = screen.getByPlaceholderText('Apa yang Anda pikirkan?');
+    const textarea = screen.getByPlaceholderText('💭 Apa yang ingin Anda bagikan dengan komunitas kampus hari ini?');
     const submitButton = screen.getByRole('button', { name: 'Post' });
     
     await user.type(textarea, '   ');
@@ -82,15 +79,14 @@ describe('PostForm Component', () => {
       upvotes: 0,
       downvotes: 0,      comments: []
     };
-    
-    api.post.mockResolvedValue({ data: newPost });
+      api.post.mockResolvedValue({ data: newPost });
     
     renderPostForm(
       { user: mockUser },
       { posts: mockPosts, setPosts: mockSetPosts }
     );
     
-    const textarea = screen.getByPlaceholderText('Apa yang Anda pikirkan?');
+    const textarea = screen.getByPlaceholderText('💭 Apa yang ingin Anda bagikan dengan komunitas kampus hari ini?');
     const submitButton = screen.getByRole('button', { name: 'Post' });
     
     await user.type(textarea, 'New test post');
@@ -111,13 +107,12 @@ describe('PostForm Component', () => {
     const errorResponse = new Error('Server error');
     errorResponse.response = { status: 500, data: { error: 'Server error' } };
     api.post.mockRejectedValue(errorResponse);
-    
-    renderPostForm(
+      renderPostForm(
       { user: mockUser },
       { posts: mockPosts, setPosts: mockSetPosts }
     );
     
-    const textarea = screen.getByPlaceholderText('Apa yang Anda pikirkan?');
+    const textarea = screen.getByPlaceholderText('💭 Apa yang ingin Anda bagikan dengan komunitas kampus hari ini?');
     const submitButton = screen.getByRole('button', { name: 'Post' });
     
     await user.type(textarea, 'Test post');
@@ -135,13 +130,12 @@ describe('PostForm Component', () => {
   test('does not submit when content is empty after trimming', async () => {
     const user = userEvent.setup();
     const mockSetPosts = jest.fn();
-    
-    renderPostForm(
+      renderPostForm(
       { user: mockUser },
       { posts: mockPosts, setPosts: mockSetPosts }
     );
     
-    const textarea = screen.getByPlaceholderText('Apa yang Anda pikirkan?');
+    const textarea = screen.getByPlaceholderText('💭 Apa yang ingin Anda bagikan dengan komunitas kampus hari ini?');
     
     await user.type(textarea, '   ');
     
@@ -160,13 +154,12 @@ describe('PostForm Component', () => {
       expect(data.content).toBe('Test post content');
       return Promise.resolve({ data: responseData });
     });
-    
-    renderPostForm(
+      renderPostForm(
       { user: mockUser },
       { posts: mockPosts, setPosts: mockSetPosts }
     );
     
-    const textarea = screen.getByPlaceholderText('Apa yang Anda pikirkan?');
+    const textarea = screen.getByPlaceholderText('💭 Apa yang ingin Anda bagikan dengan komunitas kampus hari ini?');
     const submitButton = screen.getByRole('button', { name: 'Post' });
     
     await user.type(textarea, 'Test post content');
@@ -182,13 +175,12 @@ describe('PostForm Component', () => {
     const newPost = { id: 2, content: 'Test content', username: 'testuser' };
     
     api.post.mockResolvedValue({ data: newPost });
-    
-    renderPostForm(
+      renderPostForm(
       { user: mockUser },
       { posts: mockPosts, setPosts: mockSetPosts }
     );
     
-    const textarea = screen.getByPlaceholderText('Apa yang Anda pikirkan?');
+    const textarea = screen.getByPlaceholderText('💭 Apa yang ingin Anda bagikan dengan komunitas kampus hari ini?');
     
     await user.type(textarea, 'Test content');
     await user.keyboard('{Control>}{Enter}'); // Assuming Ctrl+Enter submits
@@ -209,13 +201,12 @@ describe('PostForm Component', () => {
       expect(data.content).toBe('Trimmed content');
       return Promise.resolve({ data: responseData });
     });
-    
-    renderPostForm(
+      renderPostForm(
       { user: mockUser },
       { posts: mockPosts, setPosts: mockSetPosts }
     );
     
-    const textarea = screen.getByPlaceholderText('Apa yang Anda pikirkan?');
+    const textarea = screen.getByPlaceholderText('💭 Apa yang ingin Anda bagikan dengan komunitas kampus hari ini?');
     const submitButton = screen.getByRole('button', { name: 'Post' });
     
     await user.type(textarea, '  Trimmed content  ');

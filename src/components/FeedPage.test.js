@@ -89,11 +89,10 @@ describe('FeedPage Component', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
-
   test('renders feed page with title and post form', () => {
     renderWithProviders(<FeedPage />);
     
-    expect(screen.getByText('Feed')).toBeInTheDocument();
+    expect(screen.getByText('Feed Komunitas')).toBeInTheDocument();
     expect(screen.getByTestId('post-form')).toBeInTheDocument();
     expect(screen.getByTestId('infinite-scroll')).toBeInTheDocument();
   });
@@ -148,26 +147,23 @@ describe('FeedPage Component', () => {
       expect(screen.getByTestId('post-item-10')).toBeInTheDocument();
     });
   });
-
   test('shows loading message when more posts available', () => {
     const mockPosts = createMockPosts(10);
     renderWithProviders(<FeedPage />, { posts: mockPosts });
     
-    expect(screen.getByText('Loading more...')).toBeInTheDocument();
+    expect(screen.getByText('Memuat lebih banyak post...')).toBeInTheDocument();
   });
-
   test('does not show load more button when all posts displayed', () => {
     const mockPosts = createMockPosts(3); // Less than page size
     renderWithProviders(<FeedPage />, { posts: mockPosts });
     
     expect(screen.queryByTestId('load-more')).not.toBeInTheDocument();
-    expect(screen.queryByText('Loading more...')).not.toBeInTheDocument();
+    expect(screen.queryByText('Memuat lebih banyak post...')).not.toBeInTheDocument();
   });
-
   test('handles empty posts array', () => {
     renderWithProviders(<FeedPage />, { posts: [] });
     
-    expect(screen.getByText('Feed')).toBeInTheDocument();
+    expect(screen.getByText('Feed Komunitas')).toBeInTheDocument();
     expect(screen.getByTestId('post-form')).toBeInTheDocument();
     expect(screen.getByTestId('infinite-scroll')).toBeInTheDocument();
     

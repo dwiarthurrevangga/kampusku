@@ -21,11 +21,10 @@ describe('Login Component', () => {
   beforeEach(() => {
     mockLogin.mockClear();
     __mockNavigate.mockClear();
-  });
-  test('renders login form correctly', () => {
+  });  test('renders login form correctly', () => {
     renderLogin();
     
-    expect(screen.getByRole('heading', { name: 'Login' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 1, name: 'Login' })).toBeInTheDocument();
     expect(screen.getByLabelText('Username')).toBeInTheDocument();
     expect(screen.getByLabelText('Password')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Login' })).toBeInTheDocument();

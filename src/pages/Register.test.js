@@ -21,9 +21,9 @@ describe('Register Component', () => {
     __mockNavigate.mockClear();
   });
 
-  test('renders register form correctly', () => {
-    renderRegister();
-      expect(screen.getByRole('heading', { name: 'Register' })).toBeInTheDocument();
+  test('renders register form correctly', () => {    renderRegister();
+    
+    expect(screen.getByRole('heading', { level: 1, name: 'Register' })).toBeInTheDocument();
     expect(screen.getByLabelText('Username')).toBeInTheDocument();
     expect(screen.getByLabelText('Email')).toBeInTheDocument();
     expect(screen.getByLabelText('Password')).toBeInTheDocument();

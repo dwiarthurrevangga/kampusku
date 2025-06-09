@@ -39,58 +39,83 @@ export default function Login() {
   };
 
   return (
-    <Container className="d-flex justify-content-center align-items-center" style={{ minHeight: '80vh' }}>
+    <Container className="d-flex justify-content-center align-items-center min-vh-100">
       <Row className="w-100">
         <Col xs={12} sm={10} md={8} lg={5} xl={4} className="mx-auto">
           <Card className="auth-card shadow-lg">
-            <Card.Body>              <div className="text-center mb-4">
-                <h1 className="gradient-text mb-2">Login</h1>
+            <Card.Body>
+              <div className="text-center mb-4">
+                <h2 className="gradient-text mb-2">Selamat Datang Kembali!</h2>
                 <p className="text-muted">Masuk ke akun Kampusku Anda</p>
               </div>
               
               {error && (
                 <Alert variant="danger" className="mb-4 border-0 rounded">
+                  <i className="fas fa-exclamation-circle me-2"></i>
                   {error}
                 </Alert>
               )}
               
               <Form onSubmit={handleSubmit}>
                 <Form.Group controlId="loginUsername" className="mb-3">
-                  <Form.Label>Username</Form.Label>
+                  <Form.Label>
+                    <i className="fas fa-user me-2 text-primary"></i>
+                    Username
+                  </Form.Label>
                   <Form.Control
                     type="text"
                     placeholder="Masukkan username Anda"
                     value={username}
                     onChange={e => setUsername(e.target.value)}
                     disabled={loading}
+                    className="form-control-enhanced"
                   />
                 </Form.Group>
 
                 <Form.Group controlId="loginPassword" className="mb-4">
-                  <Form.Label>Password</Form.Label>
+                  <Form.Label>
+                    <i className="fas fa-lock me-2 text-primary"></i>
+                    Password
+                  </Form.Label>
                   <Form.Control
                     type="password"
                     placeholder="Masukkan password Anda"
                     value={password}
                     onChange={e => setPassword(e.target.value)}
                     disabled={loading}
+                    className="form-control-enhanced"
                   />
-                </Form.Group>                <div className="d-grid mb-3">
+                </Form.Group>
+
+                <div className="d-grid mb-3">
                   <Button 
                     type="submit" 
-                    disabled={loading}
+                    className="btn-enhanced"
+                    disabled={loading || !username.trim() || !password}
                   >
-                    {loading ? 'Masuk...' : 'Login'}
+                    {loading ? (
+                      <>
+                        <i className="fas fa-spinner fa-spin me-2"></i>
+                        Masuk...
+                      </>
+                    ) : (
+                      <>
+                        <i className="fas fa-sign-in-alt me-2"></i>
+                        Login
+                      </>
+                    )}
                   </Button>
-                </div><div className="text-center">
+                </div>
+                
+                <div className="text-center">
                   <p className="text-muted mb-0">
-                    Belum punya akun?
+                    Belum punya akun? 
                     <Link 
-                        to="/register" 
-                        className="text-decoration-none ms-1 fw-semibold"
-                        style={{ color: 'var(--primary-dark)' }}
-                      >
-                        Register
+                      to="/register" 
+                      className="text-decoration-none ms-1 fw-semibold"
+                      style={{ color: 'var(--primary-color)' }}
+                    >
+                      Daftar sekarang
                     </Link>
                   </p>
                 </div>

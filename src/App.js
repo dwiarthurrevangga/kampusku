@@ -17,7 +17,7 @@ function App() {
       <PostsProvider>
         <Router>
           <NavigationBar />
-          <div className="container mt-4">
+          <div className="main-content">
             <Routes>
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />

@@ -25,11 +25,10 @@ describe('NavigationBar Component', () => {
   beforeEach(() => {    mockLogout.mockClear();
     __mockNavigate.mockClear();
   });
-
   test('renders navigation bar correctly', () => {
     renderNavigationBar();
     
-    expect(screen.getByText('Kampusku')).toBeInTheDocument();
+    expect(screen.getByText('🎓 Kampusku')).toBeInTheDocument();
     expect(screen.getByText('Beranda')).toBeInTheDocument();
   });
 
@@ -65,11 +64,10 @@ describe('NavigationBar Component', () => {
     expect(mockLogout).toHaveBeenCalled();
     expect(__mockNavigate).toHaveBeenCalledWith('/login');
   });
-
   test('brand link points to home page', () => {
     renderNavigationBar();
     
-    const brandLink = screen.getByText('Kampusku');
+    const brandLink = screen.getByText('🎓 Kampusku');
     expect(brandLink.closest('a')).toHaveAttribute('href', '/');
   });
 
